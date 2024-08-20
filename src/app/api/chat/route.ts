@@ -29,7 +29,12 @@ Remember, your goal is to help students make informed decisions about their cour
 
 export default async function POST(req: Request) {
   // get req body and initialize openai + pineocne
-  const data = await req.json();
+  const body = await req.json();
+  const data = body?.messages;
+  if (!data) {
+    return new NextResponse("Bad Request", { status: 400 });
+  }
+
   const pc = new Pinecone({
     apiKey: process.env.PINECONE_API_KEY!,
   });
@@ -42,7 +47,7 @@ export default async function POST(req: Request) {
   // get the last message from the openai conversation
   const text = data[data.length - 1].content;
   // create an embedding from the text
-  const embedding = await OpenAI.Embeddings.create({
+  const embedding = await openai.embeddings.create({
     model: "text-embedding-3-small",
     input: text,
     encoding_format: "float",
@@ -77,7 +82,7 @@ export default async function POST(req: Request) {
   const lastMessage = data[data.length - 1];
   const lastMessageContent = lastMessage.content + resultString;
   const lastDataWithoutLastMessage = data.slice(0, data.length - 1);
-  const completion = await OpenAI.Chat.Completions.create({
+  const completion = await openai.chat.completions.create({
     model: "gpt-4o-mini",
     messages: [
       {
