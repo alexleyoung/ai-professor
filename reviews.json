@@ -1,5 +1,5 @@
 {
-  "professor_reviews": [
+  "reviews": [
     {
       "id": 1,
       "professor_name": "Dr. Sarah Johnson",
@@ -9,7 +9,8 @@
       "difficulty": 3.8,
       "comment": "Challenging but fair. Great at explaining complex concepts.",
       "would_take_again": true,
-      "date": "2024-03-15"
+      "date": "2024-03-15",
+      "grade": "A-"
     },
     {
       "id": 2,
@@ -20,7 +21,8 @@
       "difficulty": 4.5,
       "comment": "Tough grader, but you'll learn a lot if you put in the effort.",
       "would_take_again": false,
-      "date": "2024-02-28"
+      "date": "2024-02-28",
+      "grade": "B"
     },
     {
       "id": 3,
@@ -31,7 +33,8 @@
       "difficulty": 2.5,
       "comment": "Engaging lectures and very approachable. Highly recommended!",
       "would_take_again": true,
-      "date": "2024-03-10"
+      "date": "2024-03-10",
+      "grade": "A+"
     },
     {
       "id": 4,
@@ -42,7 +45,8 @@
       "difficulty": 3.2,
       "comment": "Interesting content, but assignments can be vague.",
       "would_take_again": true,
-      "date": "2024-03-05"
+      "date": "2024-03-05",
+      "grade": "B+"
     },
     {
       "id": 5,
@@ -53,7 +57,8 @@
       "difficulty": 3.5,
       "comment": "Passionate about the subject. Exams are tough but fair.",
       "would_take_again": true,
-      "date": "2024-03-20"
+      "date": "2024-03-20",
+      "grade": "A-"
     },
     {
       "id": 6,
@@ -64,7 +69,8 @@
       "difficulty": 4.7,
       "comment": "Brilliant mathematician, but struggles to explain concepts clearly.",
       "would_take_again": false,
-      "date": "2024-02-25"
+      "date": "2024-02-25",
+      "grade": "C+"
     },
     {
       "id": 7,
@@ -75,7 +81,8 @@
       "difficulty": 4.0,
       "comment": "Challenging course, but Dr. Garcia makes it enjoyable.",
       "would_take_again": true,
-      "date": "2024-03-18"
+      "date": "2024-03-18",
+      "grade": "A"
     },
     {
       "id": 8,
@@ -86,7 +93,8 @@
       "difficulty": 2.8,
       "comment": "Thought-provoking discussions, but grading can be subjective.",
       "would_take_again": true,
-      "date": "2024-03-12"
+      "date": "2024-03-12",
+      "grade": "B+"
     },
     {
       "id": 9,
@@ -97,7 +105,8 @@
       "difficulty": 2.2,
       "comment": "Engaging lecturer and very understanding. Easy A if you participate.",
       "would_take_again": true,
-      "date": "2024-03-22"
+      "date": "2024-03-22",
+      "grade": "A"
     },
     {
       "id": 10,
@@ -108,7 +117,8 @@
       "difficulty": 4.2,
       "comment": "Dry lectures, but the material is important. Be prepared to self-study.",
       "would_take_again": false,
-      "date": "2024-03-08"
+      "date": "2024-03-08",
+      "grade": "C"
     },
     {
       "id": 11,
@@ -119,7 +129,8 @@
       "difficulty": 3.0,
       "comment": "Passionate and knowledgeable. Makes art history come alive!",
       "would_take_again": true,
-      "date": "2024-03-25"
+      "date": "2024-03-25",
+      "grade": "A+"
     },
     {
       "id": 12,
@@ -130,7 +141,8 @@
       "difficulty": 3.7,
       "comment": "Balanced perspective on controversial topics. Stimulating debates.",
       "would_take_again": true,
-      "date": "2024-03-14"
+      "date": "2024-03-14",
+      "grade": "B+"
     },
     {
       "id": 13,
@@ -141,7 +153,8 @@
       "difficulty": 3.3,
       "comment": "Relevant and eye-opening course. Field trips are a highlight.",
       "would_take_again": true,
-      "date": "2024-03-19"
+      "date": "2024-03-19",
+      "grade": "A-"
     },
     {
       "id": 14,
@@ -152,7 +165,8 @@
       "difficulty": 4.1,
       "comment": "Challenging concepts, but Prof. Murphy is always willing to explain.",
       "would_take_again": true,
-      "date": "2024-03-07"
+      "date": "2024-03-07",
+      "grade": "B"
     },
     {
       "id": 15,
@@ -163,7 +177,8 @@
       "difficulty": 3.6,
       "comment": "Fascinating subject matter. Dr. Rodriguez is enthusiastic and helpful.",
       "would_take_again": true,
-      "date": "2024-03-21"
+      "date": "2024-03-21",
+      "grade": "A"
     },
     {
       "id": 16,
@@ -174,7 +189,8 @@
       "difficulty": 3.9,
       "comment": "Real-world examples make the course relevant, but heavy workload.",
       "would_take_again": false,
-      "date": "2024-03-02"
+      "date": "2024-03-02",
+      "grade": "B-"
     },
     {
       "id": 17,
@@ -185,7 +201,8 @@
       "difficulty": 4.3,
       "comment": "Brilliant professor. Difficult material, but Dr. Wright makes it digestible.",
       "would_take_again": true,
-      "date": "2024-03-23"
+      "date": "2024-03-23",
+      "grade": "A"
     },
     {
       "id": 18,
@@ -196,7 +213,8 @@
       "difficulty": 2.1,
       "comment": "Fun and interactive classes. Great for non-music majors too.",
       "would_take_again": true,
-      "date": "2024-03-16"
+      "date": "2024-03-16",
+      "grade": "A"
     },
     {
       "id": 19,
@@ -207,7 +225,8 @@
       "difficulty": 3.4,
       "comment": "Insightful lectures and interesting assignments. Fair grader.",
       "would_take_again": true,
-      "date": "2024-03-09"
+      "date": "2024-03-09",
+      "grade": "B+"
     },
     {
       "id": 20,
@@ -218,7 +237,8 @@
       "difficulty": 4.6,
       "comment": "Cutting-edge content, but fast-paced. Office hours are very helpful.",
       "would_take_again": true,
-      "date": "2024-03-17"
+      "date": "2024-03-17",
+      "grade": "B"
     }
   ]
 }
