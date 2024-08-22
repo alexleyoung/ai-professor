@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { Pinecone } from "@pinecone-database/pinecone";
 import { OpenAI } from "openai";
+import { zodResponseFormat } from "openai/helpers/zod";
+import { z } from "zod";
 
 const SYSTEM_PROMPT = `You are an AI assistant specialized in helping students find the best professors based on their queries. Your knowledge base consists of professor reviews and ratings from a comprehensive database similar to Rate My Professor. For each query, you will use RAG (Retrieval-Augmented Generation) to provide information on the top 3 most relevant professors.
 
@@ -8,15 +10,10 @@ Your tasks:
 1. Interpret the student's query, which may include factors such as subject area, teaching style, difficulty level, or specific course requirements.
 2. Use RAG to retrieve information on the top 3 most relevant professors based on the query.
 3. Present the information for each professor in a clear, concise format, including:
-   - Professor's name
-   - Department
-   - Overall rating
-   - Difficulty level
    - A brief summary of student feedback
    - Any standout characteristics or teaching methods
-4. Provide a short explanation of why these professors were selected based on the query.
-5. If applicable, offer additional advice or considerations for the student's course selection.
-
+   - A short explanation of why these professors were selected based on the query.
+   
 Guidelines:
 - Always maintain a neutral, informative tone.
 - Do not share personal information about professors beyond what's publicly available in reviews.
@@ -24,8 +21,18 @@ Guidelines:
 - Be aware of potential biases in reviews and ratings, and mention this when relevant.
 - If there isn't enough information to confidently recommend professors for a specific query, be honest about the limitations and suggest how the student might gather more information.
 
+Output: The output should resemble a json with the messages array where the explanation for each professor is a separate element.
+example:
+{
+  "messages": ["Professor one excels at this", "Professor two is known for that", "Professor three is great at this"]
+}
+
 Remember, your goal is to help students make informed decisions about their course selections based on professor reviews and ratings. Provide balanced, helpful information that allows students to choose professors that best fit their learning style and academic goals.
 `;
+
+const Response = z.object({
+  messages: z.array(z.string()),
+});
 
 export async function POST(req: Request) {
   // get req body and initialize openai + pineocne
@@ -97,11 +104,19 @@ export async function POST(req: Request) {
         content: lastMessageContent,
       },
     ],
+    response_format: zodResponseFormat(Response, "response"),
   });
+
+  if (!completion.choices[0].message.content) {
+    return new NextResponse("Error: No response from GPT-4o", { status: 500 });
+  }
+  const messageData = JSON.parse(
+    completion.choices[0].message.content
+  ).messages;
 
   return NextResponse.json(
     {
-      message: completion.choices[0].message.content,
+      messages: messageData,
       professors: profIds,
     },
     {
