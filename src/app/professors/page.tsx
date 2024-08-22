@@ -2,7 +2,8 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createClient } from "@/utils/supabase/client";
 
 import Header from "@/components/professors-page/Header";
 import { Button } from "@/components/ui/button";
@@ -11,11 +12,11 @@ import { Label } from "@/components/ui/label";
 import { Search } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import ProfessorCard from "@/components/professors-page/ProfessorCard";
-import { createClient } from "@/utils/supabase/client";
 
 export default function Professors() {
   const [search, setSearch] = useState("");
   const [professors, setProfessors] = useState<String[]>([]);
+  const [professorsData, setProfessorsData] = useState<Professor[]>([]);
   const [loading, setLoading] = useState(false);
 
   const { toast } = useToast();
@@ -44,6 +45,33 @@ export default function Professors() {
     setLoading(false);
   }
 
+  useEffect(() => {
+    if (professors.length !== 0) {
+      setLoading(true);
+      // get professors data
+      const supabase = createClient();
+      professors.forEach(async (profId) => {
+        const { data, error } = await supabase
+          .from("professors")
+          .select("*")
+          .eq("id", profId)
+          .single();
+        if (error) {
+          toast({
+            title: "Error",
+            description: "An error occurred while fetching professor data.",
+          });
+        }
+        setProfessorsData((prev) => [...prev, data]);
+      });
+      setLoading(false);
+      toast({
+        title: "Success",
+        description: "Scroll down to see professors!",
+      });
+    }
+  }, [professors]);
+
   return (
     <>
       <Header />
@@ -64,11 +92,12 @@ export default function Professors() {
             <Input
               id='find-professor'
               placeholder='Find a professor that explains complex topics well'
+              disabled={loading}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              onKeyDown={(e) => {
+              onKeyDown={async (e) => {
                 if (!loading && e.key === "Enter") {
-                  chat(search);
+                  await chat(search);
                   setSearch("");
                 }
               }}
@@ -76,9 +105,9 @@ export default function Professors() {
             <Button
               variant={"secondary"}
               disabled={loading}
-              onClick={() => {
+              onClick={async () => {
                 // search for professors
-                chat(search);
+                await chat(search);
                 setSearch("");
               }}>
               <Search size={24} />
@@ -86,15 +115,11 @@ export default function Professors() {
           </div>
         </section>
         {/* top 3 professors with explanation after search is done */}
-        {professors.length !== 0 && (
+        {professorsData.length !== 0 && (
           <section className='h-screen'>
-            {professors.map(async (prof) => {
-              const supabase = createClient();
-              const { data, error } = await supabase
-                .from("professors")
-                .select()
-                .eq("id", prof);
-              return <ProfessorCard key={Number(prof)} prof={data} />;
+            {professorsData.map((prof) => {
+              // get professor data
+              return <ProfessorCard key={Number(prof.id)} prof={prof} />;
             })}
           </section>
         )}
