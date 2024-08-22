@@ -27,7 +27,7 @@ Guidelines:
 Remember, your goal is to help students make informed decisions about their course selections based on professor reviews and ratings. Provide balanced, helpful information that allows students to choose professors that best fit their learning style and academic goals.
 `;
 
-export default async function POST(req: Request) {
+export async function POST(req: Request) {
   // get req body and initialize openai + pineocne
   const body = await req.json();
   const data = body?.messages;
@@ -44,12 +44,12 @@ export default async function POST(req: Request) {
 
   // get pinecone index
   const index = pc.index("ai-professor").namespace("ns1");
-  // get the last message from the openai conversation
-  const text = data[data.length - 1].content;
+  // get the most recent user message from the openai conversation
+  const userMessage = data[data.length - 1].content;
   // create an embedding from the text
   const embedding = await openai.embeddings.create({
     model: "text-embedding-3-small",
-    input: text,
+    input: userMessage,
     encoding_format: "float",
   });
 
@@ -62,7 +62,9 @@ export default async function POST(req: Request) {
 
   // create a response string with the results
   let resultString = "\n\nReturned results from vector db automatically:";
+  const profIds: String[] = [];
   results.matches.forEach((match) => {
+    profIds.push(match.id);
     resultString += `\n
     Professor: ${match.metadata?.professor_name}
     Department: ${match.metadata?.department}
@@ -95,27 +97,15 @@ export default async function POST(req: Request) {
         content: lastMessageContent,
       },
     ],
-    stream: true,
   });
 
-  const stream = new ReadableStream({
-    async start(controller) {
-      const encoder = new TextEncoder();
-      try {
-        for await (const chunk of completion) {
-          const content = chunk.choices[0]?.delta?.content;
-          if (content) {
-            const text = encoder.encode(content);
-            controller.enqueue(text);
-          }
-        }
-      } catch (error) {
-        controller.error(error);
-      } finally {
-        controller.close();
-      }
+  return NextResponse.json(
+    {
+      message: completion.choices[0].message.content,
+      professors: profIds,
     },
-  });
-
-  return new NextResponse(stream);
+    {
+      status: 200,
+    }
+  );
 }
