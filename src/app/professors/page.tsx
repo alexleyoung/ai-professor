@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import Header from "@/components/professors-page/Header";
 import { Button } from "@/components/ui/button";
@@ -43,10 +43,6 @@ export default function Professors() {
     }
     setLoading(false);
   }
-
-  useEffect(() => {
-    console.log(professors);
-  }, [professors]);
 
   return (
     <>
@@ -94,8 +90,11 @@ export default function Professors() {
           <section className='h-screen'>
             {professors.map(async (prof) => {
               const supabase = createClient();
-              const professor = await supabase.from("professors").select();
-              return <ProfessorCard key={Number(prof)} professor={professor} />;
+              const { data, error } = await supabase
+                .from("professors")
+                .select()
+                .eq("id", prof);
+              return <ProfessorCard key={Number(prof)} prof={data} />;
             })}
           </section>
         )}
