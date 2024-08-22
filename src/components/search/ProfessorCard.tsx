@@ -1,14 +1,17 @@
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export default function ProfessorCard({
   prof,
   message,
 }: {
   prof: Professor;
-  message: string;
+  message?: string;
 }) {
   return (
-    <div className='bg-muted p-4 flex gap-4'>
+    <Link
+      href={`/professors/${prof.id}`}
+      className='bg-muted hover:scale-[1.015] transition-transform duration-300 p-4 flex gap-4'>
       <div className='flex flex-col gap-2'>
         <h2 className='font-semibold'>Overall</h2>
         <div
@@ -37,6 +40,6 @@ export default function ProfessorCard({
         </h1>
         <p>{message}</p>
       </div>
-    </div>
+    </Link>
   );
 }
