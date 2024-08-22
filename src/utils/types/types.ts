@@ -5,6 +5,7 @@ export type Professor = {
   courses: string[];
   overall_rating: number;
   difficulty_level: number;
+  review_count: number;
   created_at: string;
 };
 

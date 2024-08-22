@@ -22,7 +22,13 @@ export default function ProfessorCard({
           )}>
           {prof.overall_rating}
         </div>
-        <h2># ratings</h2>
+        <h2 className='text-nowrap'>
+          {prof.review_count
+            ? prof.review_count === 1
+              ? `${prof.review_count} rating`
+              : `${prof.review_count} ratings`
+            : "No ratings"}
+        </h2>
       </div>
       <div className='flex flex-col gap-2'>
         <h1 className='text-xl flex flex-col sm:flex-row gap-2'>
