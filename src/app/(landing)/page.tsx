@@ -9,75 +9,41 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu"
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
 import Link from "next/link"
+import Hero from "@/components/landing/Hero"
+import Features from "@/components/landing/Features"
 
 
 
 export default function Landing() {
   return (
-    <main className='flex min-h-screen flex-col items-center justify-between p-24'>
+    <main className='flex min-h-screen flex-col justify-between bg-slate-50'>
       {/* Navbar */}
-      <NavigationMenu>
-        <NavigationMenuList>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>can put links here</NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <NavigationMenuLink>link is not cooperating</NavigationMenuLink>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <Link href="/docs" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                professors
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <Link href="/docs" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Something else here
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <Link href="/docs" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Documentation
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
-
-      {/* Hero Section */}
-      <div className='flex flex-row items-center justify-center w-full h-80% p-8 border'>
-        <p>hero section. Im not really sure what you want in this part</p>
-        {/* put an image here */}
+      <div className="flex flex-row items-center justify-between p-4 bg-white">
+        <div className="flex flex-row items-center space-x-4 pl-4">
+          <Avatar>
+            <AvatarImage src="https://yt3.googleusercontent.com/iPhOVJRVwHO5jKZrM83CNXb4-Sxm6J6ciJnkDWg60EdFShT6tf0M9iM4IjaW-ASG8ED7LbiJzg=s900-c-k-c0x00ffffff-no-rj" />
+            <AvatarFallback>RMP</AvatarFallback>
+          </Avatar>
+          <h1 className='text-4xl font-extrabold tracking-tight lg:text-5xl py-2'>RateMyBrofessor</h1>
+        </div>
+        <NavigationMenu className="pr-4">
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <Link href="/docs" legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Sign in  
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
       </div>
-      {/* Features */}
-      <Accordion type="single" collapsible className="w-80">
-        <AccordionItem value="item-1">
-          <AccordionTrigger>Does it have cool features?</AccordionTrigger>
-          <AccordionContent>
-            Yes. It adheres to the WAI-ARIA design pattern.
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-2">
-          <AccordionTrigger>Look at those professors!</AccordionTrigger>
-          <AccordionContent>
-            wow look at them.
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-
+      <Hero />
+      <Features />
       {/* Footer */}
     </main>
   );
