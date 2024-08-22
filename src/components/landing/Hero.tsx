@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import React from "react";
 import { AuroraBackground } from "../ui/aurora-background";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -24,7 +25,7 @@ export default function Hero() {
             Let&apos;s go champ
         </div>
         <button className="bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-4 py-2">
-            Search
+            <Link href="/search">Search</Link> 
         </button>
       </motion.div>
     </AuroraBackground>
