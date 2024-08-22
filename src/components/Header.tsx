@@ -9,7 +9,7 @@ export default function Header() {
   const path = usePathname();
 
   return (
-    <header className='fixed w-full flex gap-2 items-center justify-between bg-background z-50'>
+    <header className='absolute w-full flex gap-2 items-center justify-between bg-background z-50'>
       <div className='flex gap-4 items-center'>
         <Link href='/' className='p-5 text-xl font-bold'>
           ai-professor

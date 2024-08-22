@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang='en'>
       <body className={open_sans.className}>
         <Header />
-        {children}
+        <main className='pt-20'>{children}</main>
         <Toaster />
       </body>
     </html>

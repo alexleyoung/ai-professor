@@ -83,73 +83,67 @@ export default function Professors() {
 
   return (
     <>
-      <main>
-        {/* Query for professors */}
-        <section className='h-screen flex flex-col p-8 items-center justify-center gap-8'>
-          <Label
-            className='flex flex-col gap-4 items-center'
-            htmlFor='find-professor'>
-            <h1 className='text-4xl font-semibold'>
-              Find your next professor!
-            </h1>
-            <h2 className='text-xl'>
-              Use natural language and let our algorithm do the rest.
-            </h2>
-          </Label>
-          <div className='w-3/5 flex items-center gap-1'>
-            <Input
-              id='find-professor'
-              placeholder='Find a professor that explains complex topics well'
-              disabled={loading}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              onKeyDown={async (e) => {
-                if (!loading && e.key === "Enter") {
-                  await chat(search);
-                  setSearch("");
-                }
-              }}
-            />
-            <Button
-              variant={"secondary"}
-              disabled={loading}
-              onClick={async () => {
-                // search for professors
+      {/* Query for professors */}
+      <section className='-my-20 h-screen flex flex-col p-8 items-center justify-center gap-8'>
+        <Label
+          className='flex flex-col gap-4 items-center'
+          htmlFor='find-professor'>
+          <h1 className='text-4xl font-semibold'>Find your next professor!</h1>
+          <h2 className='text-xl'>
+            Use natural language and let our algorithm do the rest.
+          </h2>
+        </Label>
+        <div className='w-3/5 flex items-center gap-1'>
+          <Input
+            id='find-professor'
+            placeholder='Find a professor that explains complex topics well'
+            disabled={loading}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={async (e) => {
+              if (!loading && e.key === "Enter") {
                 await chat(search);
                 setSearch("");
-              }}>
-              <Search size={24} />
-            </Button>
+              }
+            }}
+          />
+          <Button
+            variant={"secondary"}
+            disabled={loading}
+            onClick={async () => {
+              // search for professors
+              await chat(search);
+              setSearch("");
+            }}>
+            <Search size={24} />
+          </Button>
+        </div>
+      </section>
+
+      {/* top 3 professors with explanation after search is done */}
+      {queryResult.length !== 0 && (
+        <section className='p-8 min-h-screen flex flex-col gap-4'>
+          <div className='flex flex-col gap-2'>
+            <h1 className='text-4xl font-semibold'>Top 3 professors for you</h1>
+            <h2 className='text-xl'>
+              Based on your query, we found the following professors that match
+              your criteria.
+            </h2>
+          </div>
+          <div className='flex flex-col gap-4'>
+            {queryResult.map((prof, i) => {
+              // get professor data
+              return (
+                <ProfessorCard
+                  key={Number(prof.id)}
+                  prof={prof}
+                  message={professors.messages[i]}
+                />
+              );
+            })}
           </div>
         </section>
-
-        {/* top 3 professors with explanation after search is done */}
-        {queryResult.length !== 0 && (
-          <section className='p-8 min-h-screen flex flex-col gap-4'>
-            <div className='flex flex-col gap-2'>
-              <h1 className='text-4xl font-semibold'>
-                Top 3 professors for you
-              </h1>
-              <h2 className='text-xl'>
-                Based on your query, we found the following professors that
-                match your criteria.
-              </h2>
-            </div>
-            <div className='flex flex-col gap-4'>
-              {queryResult.map((prof, i) => {
-                // get professor data
-                return (
-                  <ProfessorCard
-                    key={Number(prof.id)}
-                    prof={prof}
-                    message={professors.messages[i]}
-                  />
-                );
-              })}
-            </div>
-          </section>
-        )}
-      </main>
+      )}
     </>
   );
 }
