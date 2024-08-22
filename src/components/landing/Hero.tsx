@@ -15,16 +15,15 @@ export default function Hero() {
           duration: 0.8,
           ease: "easeInOut",
         }}
-        className="relative flex flex-col gap-4 items-center justify-center px-4"
-      >
-        <div className="text-3xl md:text-7xl font-bold dark:text-white text-center">
-            Find the right professor for the job.
+        className='relative flex flex-col gap-4 items-center justify-center px-4'>
+        <div className='text-3xl md:text-7xl font-bold dark:text-white text-center'>
+          Find the right professor for the job.
         </div>
-        <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 py-4">
-            Let&apos;s go champ
+        <div className='font-extralight text-base md:text-4xl dark:text-neutral-200 py-4'>
+          Let&apos;s go champ
         </div>
-        <button className="bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-4 py-2">
-            Search
+        <button className='bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-4 py-2'>
+          Search
         </button>
       </motion.div>
     </AuroraBackground>
