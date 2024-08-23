@@ -36,8 +36,8 @@ const formSchema = z.object({
   professor_id: z.string().min(1).max(10),
   professor_name: z.string().min(1).max(100),
   course_code: z.string().min(1).max(10),
-  rating: z.number().int().min(1).max(5),
-  difficulty: z.number().int().min(1).max(5),
+  rating: z.number().min(1).max(5),
+  difficulty: z.number().min(1).max(5),
   comment: z.string().min(1).max(500),
   would_take_again: z.boolean().optional(),
   grade: z.string().optional().optional(),
@@ -81,9 +81,6 @@ export default function ReviewForm({
     defaultValues: {
       professor_id: String(prof.id), // automatic
       professor_name: prof.name, // automatic
-      rating: 0,
-      difficulty: 0,
-      comment: "",
     },
   });
 
@@ -94,8 +91,8 @@ export default function ReviewForm({
     const flag = await moderateText(values.comment);
     if (flag) {
       toast({
-        title: "Review flagged",
-        description: "Please remove inappropriate content.",
+        title: "Comment flagged",
+        description: "Please remove inappropriate or hateful content.",
         variant: "destructive",
       });
       return;
@@ -161,8 +158,11 @@ export default function ReviewForm({
               <FormControl>
                 <Input
                   {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
+                  onChange={(e) =>
+                    field.onChange(Number(e.target.value + ".0"))
+                  }
                   type='number'
+                  step={1}
                   min={1}
                   max={5}
                 />
@@ -183,7 +183,9 @@ export default function ReviewForm({
               <FormControl>
                 <Input
                   {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
+                  onChange={(e) =>
+                    field.onChange(Number(e.target.value + ".0"))
+                  }
                   type='number'
                   min={1}
                   max={5}

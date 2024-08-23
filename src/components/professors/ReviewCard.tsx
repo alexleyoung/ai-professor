@@ -1,5 +1,10 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import Tag from "@/components/professors/Tag";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
+import { deleteReview } from "@/utils/crud/reviews";
 
 export default function ReviewCard({ review }: { review: Review }) {
   return (
@@ -54,6 +59,14 @@ export default function ReviewCard({ review }: { review: Review }) {
         </p>
         <p>{review.comment}</p>
       </div>
+      <Button
+        variant='ghost'
+        onClick={async () => {
+          await deleteReview(String(review.id));
+          window.location.reload();
+        }}>
+        <X />
+      </Button>
     </div>
   );
 }

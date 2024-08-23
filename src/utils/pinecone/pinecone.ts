@@ -38,3 +38,7 @@ export async function embedReview(review: Review) {
   ];
   await index.namespace("ns1").upsert(data);
 }
+
+export async function deleteReviewEmbedding(reviewId: string) {
+  await index.namespace("ns1").deleteOne(reviewId);
+}

@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { embedReview } from "../pinecone/pinecone";
+import { deleteReviewEmbedding, embedReview } from "@/utils/pinecone/pinecone";
 
 export async function getReviewsForProfessor(professorId: string) {
   const supabase = createClient();
@@ -26,6 +26,15 @@ export async function createReview(review: ReviewFormValues) {
     throw error;
   }
   embedReview(data as Review);
+  const res = await supabase.rpc("update_review_count", {
+    val: 1,
+    prof_id: review.professor_id,
+  });
+  if (res.error) {
+    console.log(res.error);
+    throw res.error;
+  }
+
   return data as Review;
 }
 
@@ -42,10 +51,20 @@ export async function updateReview(review: Review) {
 
 export async function deleteReview(id: string) {
   const supabase = createClient();
-  const { error } = await supabase.from("reviews").delete().eq("id", id);
+  const { data, error } = await supabase
+    .from("reviews")
+    .delete()
+    .eq("id", id)
+    .select()
+    .single();
   if (error) {
     throw error;
   }
+  await supabase.rpc("update_review_count", {
+    val: -1,
+    prof_id: data.professor_id,
+  });
+  await deleteReviewEmbedding(id);
 }
 
 type ReviewFormValues = {
