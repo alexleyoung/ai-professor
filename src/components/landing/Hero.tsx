@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import React from "react";
 import { AuroraBackground } from "../ui/aurora-background";
 import Link from "next/link";
+import { Button } from "../ui/button";
 
 export default function Hero() {
   return (
@@ -19,14 +20,14 @@ export default function Hero() {
         className="relative flex flex-col gap-4 items-center justify-center px-4"
       >
         <div className="text-3xl md:text-7xl font-bold dark:text-white text-center">
-            Find the right professor for the job.
+          Curated professor reviews for your needs.
         </div>
-        <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 py-4">
-            Let&apos;s go champ
+        <div className="font-extralight text-base md:text-3xl dark:text-neutral-200 py-4">
+          AI-Powered Natural Language Search
         </div>
-        <button className="bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-4 py-2">
-            <Link href="/search">Search</Link> 
-        </button>
+        <Button className="rounded-full w-fit h-14 text-xl bg-black dark:bg-white text-white dark:text-black px-4 py-2">
+          <Link href="/search">Find My Professor</Link>
+        </Button>
       </motion.div>
     </AuroraBackground>
   );

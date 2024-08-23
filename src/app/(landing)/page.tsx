@@ -15,6 +15,7 @@ import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
 import Link from "next/link"
 import Hero from "@/components/landing/Hero"
 import Features from "@/components/landing/Features"
+import Footer from "@/components/landing/Footer"
 
 
 
@@ -44,7 +45,7 @@ export default function Landing() {
       </div>
       <Hero />
       <Features />
-      {/* Footer */}
+      <Footer />
     </main>
   );
 }
