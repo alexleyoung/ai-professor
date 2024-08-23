@@ -68,7 +68,7 @@ const SkeletonOne = () => {
       <motion.div
         variants={variants}
         className='flex flex-row rounded-full border border-neutral-100 dark:border-white/[0.2] p-2  items-center space-x-2 bg-white dark:bg-black'>
-        <div className='h-6 w-6 rounded-full bg-gradient-to-r from-green-500 to-blue-500 flex-shrink-0' />
+        <div className='h-6 w-6 rounded-full bg-gradient-to-r from-green-300 to-blue-500 flex-shrink-0' />
         <div className='w-full bg-gray-100 h-4 rounded-full dark:bg-neutral-900' />
       </motion.div>
       <motion.div
@@ -207,7 +207,7 @@ const SkeletonFour = () => {
         <p className='sm:text-sm text-xs text-center font-semibold text-neutral-500 mt-4'>
           Tailwind CSS is cool, you know
         </p>
-        <p className='border border-green-500 bg-green-100 dark:bg-green-900/20 text-green-600 text-xs rounded-full px-2 py-0.5 mt-4'>
+        <p className='border border-green-300 bg-green-100 dark:bg-green-900/20 text-green-600 text-xs rounded-full px-2 py-0.5 mt-4'>
           Sensible
         </p>
       </motion.div>

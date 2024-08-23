@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { createClient } from "@/utils/supabase/client";
 
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,8 @@ export default function Professors() {
   const [queryResult, setQueryResult] = useState<Professor[]>([]);
   const [loading, setLoading] = useState(false);
 
+  const resultsRef = useRef<HTMLDivElement>(null);
+
   const { toast } = useToast();
 
   async function chat(content: string) {
@@ -38,6 +40,7 @@ export default function Professors() {
     const data: chatRes = await res.json();
     if (data) {
       setProfessors({ messages: data.messages, profIds: data.professors });
+      console.log(data);
     } else {
       toast({
         title: "Error",
@@ -80,6 +83,12 @@ export default function Professors() {
       })();
     }
   }, [professors]);
+
+  useEffect(() => {
+    if (resultsRef.current) {
+      resultsRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [queryResult]);
 
   return (
     <>
@@ -124,9 +133,12 @@ export default function Professors() {
 
       {/* top 3 professors with explanation after search is done */}
       {queryResult.length !== 0 && (
-        <section className='p-8 min-h-screen flex flex-col gap-4'>
+        <section
+          id='results'
+          ref={resultsRef}
+          className='p-8 min-h-screen flex flex-col gap-4 scroll-mt-20'>
           <div className='flex flex-col gap-2'>
-            <h1 className='text-4xl font-semibold'>Top 3 professors for you</h1>
+            <h1 className='text-4xl font-semibold'>Top professors for you</h1>
             <h2 className='text-xl'>
               Based on your query, we found the following professors that match
               your criteria.

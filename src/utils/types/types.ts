@@ -18,7 +18,10 @@ export type Review = {
   course_code: string;
   difficulty: number;
   comment: string;
-  would_take_again: boolean;
-  date: string;
-  grade: string;
+  would_take_again?: boolean;
+  grade?: string;
+  for_credit?: boolean;
+  mandatory_attendance?: boolean;
+  textbook?: boolean;
+  tags?: string[];
 };

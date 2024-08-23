@@ -3,6 +3,7 @@ import { getReviewsForProfessor } from "@/utils/crud/reviews";
 
 import { cn } from "@/lib/utils";
 import ReviewCard from "@/components/professors/ReviewCard";
+import ReviewFormWrapper from "@/components/professors/ReviewFormWrapper";
 
 export default async function Professor({
   params,
@@ -20,9 +21,9 @@ export default async function Professor({
             className={cn(
               "text-6xl",
               prof.overall_rating > 4
-                ? "text-green-500"
+                ? "text-green-300"
                 : prof.overall_rating > 2.5
-                ? "text-amber-500"
+                ? "text-yellow-300"
                 : "text-rose-500"
             )}>
             {prof.overall_rating}
@@ -37,9 +38,10 @@ export default async function Professor({
       </section>
       <section className='px-12 py-10 space-y-8'>
         <h1 className='text-4xl font-semibold'>Student Ratings</h1>
+        <ReviewFormWrapper prof={prof} />
         <div className='flex flex-col gap-2'>
           {reviews.map((review) => {
-            return <ReviewCard key={review.id} />;
+            return <ReviewCard key={review.id} review={review} />;
           })}
         </div>
       </section>
