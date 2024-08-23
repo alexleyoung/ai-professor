@@ -18,12 +18,22 @@ export default function ProfessorCard({
           className={cn(
             "p-3 text-xl font-bold",
             prof.overall_rating > 4
-              ? "bg-green-500"
+              ? "bg-green-300"
               : prof.overall_rating > 2.5
-              ? "bg-amber-500"
+              ? "bg-yellow-300"
               : "bg-rose-500"
           )}>
-          {prof.overall_rating}
+          {prof.overall_rating === 1
+            ? prof.overall_rating + ".0"
+            : prof.overall_rating === 2
+            ? prof.overall_rating + ".0"
+            : prof.overall_rating === 3
+            ? prof.overall_rating + ".0"
+            : prof.overall_rating === 4
+            ? prof.overall_rating + ".0"
+            : prof.overall_rating === 5
+            ? prof.overall_rating + ".0"
+            : prof.overall_rating}
         </div>
         <h2 className='text-nowrap'>
           {prof.review_count

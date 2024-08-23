@@ -17,13 +17,12 @@ export default function Hero() {
           duration: 0.8,
           ease: "easeInOut",
         }}
-        className="relative flex flex-col gap-4 items-center justify-center px-4"
-      >
-        <div className="text-3xl md:text-7xl font-bold dark:text-white text-center">
-          Curated professor reviews for your needs.
+        className='relative flex flex-col gap-4 items-center justify-center px-4'>
+        <div className='text-3xl md:text-7xl font-bold dark:text-white text-center'>
+        Curated professor reviews for your needs.
         </div>
-        <div className="font-extralight text-base md:text-3xl dark:text-neutral-200 py-4">
-          AI-Powered Natural Language Search
+        <div className='font-extralight text-base md:text-3xl dark:text-neutral-200 py-4'>
+        AI-Powered Natural Language Search
         </div>
         <Button className="rounded-full w-fit h-14 text-xl bg-black dark:bg-white text-white dark:text-black px-4 py-2">
           <Link href="/search">Find My Professor</Link>
