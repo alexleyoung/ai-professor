@@ -88,7 +88,9 @@ export default function Professors() {
         <Label
           className='flex flex-col gap-4 items-center'
           htmlFor='find-professor'>
-          <h1 className='text-4xl font-semibold'>Find your next professor!</h1>
+          <h1 className='text-4xl font-semibold'>
+            Find the right professor for you!
+          </h1>
           <h2 className='text-xl'>
             Use natural language and let our algorithm do the rest.
           </h2>
