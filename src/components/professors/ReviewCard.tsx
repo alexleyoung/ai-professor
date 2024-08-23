@@ -3,7 +3,7 @@ import Tag from "./Tag";
 
 export default function ReviewCard({ review }: { review: Review }) {
   return (
-    <div className='bg-muted p-8 flex flex-col sm:flex-row gap-4'>
+    <div className='bg-muted p-6 flex flex-col sm:flex-row gap-4 md:gap-8'>
       {/* scores */}
       <div className='flex sm:flex-col items-center gap-8 sm:gap-4'>
         <div className='text-center'>
@@ -36,7 +36,7 @@ export default function ReviewCard({ review }: { review: Review }) {
         </div>
       </div>
       {/* content */}
-      <div className='bg-muted p-6 flex sm:flex-col gap-3'>
+      <div className='bg-muted flex flex-col gap-4'>
         <h2 className='text-lg font-bold'>{review.course_code}</h2>
         <p className='flex gap-4'>
           {review.grade && <Tag text={`Grade: ${review.grade}`} grade />}

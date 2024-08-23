@@ -27,6 +27,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { MultiSelect } from "@/components/ui/multiselect";
 
 const formSchema = z.object({
   professor_id: z.string().min(1).max(10),
@@ -41,6 +42,28 @@ const formSchema = z.object({
   textbook: z.boolean().optional(),
   tags: z.array(z.string()).optional(),
 });
+
+const TAGS = [
+  { label: "Tough Grader", value: "tough_grader" },
+  { label: "Extra Credit", value: "extra_credit" },
+  { label: "Homework Heavy", value: "homework_heavy" },
+  { label: "Test Heavy", value: "test_heavy" },
+  { label: "Project Heavy", value: "project_heavy" },
+  { label: "Group Projects", value: "group_projects" },
+  {
+    label: "Clear Grading Criteria",
+    value: "clear_grading_criteria",
+  },
+  {
+    label: "Participation Matters",
+    value: "participation_matters",
+  },
+  {
+    label: "Skip Class? You won't pass.",
+    value: "skip_class",
+  },
+  { label: "Fun", value: "fun" },
+];
 
 export default function ReviewForm({ prof }: { prof: Professor }) {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -287,6 +310,25 @@ export default function ReviewForm({ prof }: { prof: Professor }) {
                   </SelectGroup>
                 </SelectContent>
               </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='tags'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Tags</FormLabel>
+              <FormControl>
+                <MultiSelect
+                  options={TAGS}
+                  defaultValue={field.value || []}
+                  onValueChange={(e) => field.onChange(e)}
+                  placeholder='Select tags'
+                  maxCount={3}
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
