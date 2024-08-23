@@ -30,6 +30,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { MultiSelect } from "@/components/ui/multiselect";
 import { createReview } from "@/utils/crud/reviews";
 import { useToast } from "@/components/ui/use-toast";
+import { moderateText } from "@/utils/openai/openai";
 
 const formSchema = z.object({
   professor_id: z.string().min(1).max(10),
@@ -90,6 +91,16 @@ export default function ReviewForm({
     toast({
       title: "Submitting review...",
     });
+    const flag = await moderateText(values.comment);
+    if (flag) {
+      toast({
+        title: "Review flagged",
+        description: "Please remove inappropriate content.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       await createReview(values);
       toast({
