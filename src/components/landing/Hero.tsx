@@ -24,8 +24,8 @@ export default function Hero() {
         <div className='font-extralight text-base md:text-3xl dark:text-neutral-200 py-4'>
         AI-Powered Natural Language Search
         </div>
-        <Button className="rounded-full w-fit h-14 text-xl bg-black dark:bg-white text-white dark:text-black px-4 py-2">
-          <Link href="/search">Find My Professor</Link>
+        <Button className='rounded-full w-fit h-14 text-xl bg-black dark:bg-white text-white dark:text-black px-4 py-2'>
+          <Link href='/search'>Find My Professor</Link>
         </Button>
       </motion.div>
     </AuroraBackground>
