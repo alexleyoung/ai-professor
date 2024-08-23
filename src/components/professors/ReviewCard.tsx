@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import Tag from "./Tag";
+import Tag from "@/components/professors/Tag";
 
 export default function ReviewCard({ review }: { review: Review }) {
   return (
