@@ -23,7 +23,17 @@ export default function ProfessorCard({
               ? "bg-yellow-300"
               : "bg-rose-500"
           )}>
-          {prof.overall_rating}
+          {prof.overall_rating === 1
+            ? prof.overall_rating + ".0"
+            : prof.overall_rating === 2
+            ? prof.overall_rating + ".0"
+            : prof.overall_rating === 3
+            ? prof.overall_rating + ".0"
+            : prof.overall_rating === 4
+            ? prof.overall_rating + ".0"
+            : prof.overall_rating === 5
+            ? prof.overall_rating + ".0"
+            : prof.overall_rating}
         </div>
         <h2 className='text-nowrap'>
           {prof.review_count

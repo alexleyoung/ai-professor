@@ -22,7 +22,17 @@ export default function ReviewCard({ review }: { review: Review }) {
                 ? "bg-yellow-300"
                 : "bg-rose-500"
             )}>
-            {review.rating}
+            {review.rating === 1
+              ? review.rating + ".0"
+              : review.rating === 2
+              ? review.rating + ".0"
+              : review.rating === 3
+              ? review.rating + ".0"
+              : review.rating === 4
+              ? review.rating + ".0"
+              : review.rating === 5
+              ? review.rating + ".0"
+              : review.rating}
           </h1>
         </div>
         <div className='text-center'>
@@ -36,12 +46,22 @@ export default function ReviewCard({ review }: { review: Review }) {
                 ? "bg-yellow-300"
                 : "bg-rose-500"
             )}>
-            {review.difficulty}
+            {review.difficulty === 1
+              ? review.difficulty + ".0"
+              : review.difficulty === 2
+              ? review.difficulty + ".0"
+              : review.difficulty === 3
+              ? review.difficulty + ".0"
+              : review.difficulty === 4
+              ? review.difficulty + ".0"
+              : review.difficulty === 5
+              ? review.difficulty + ".0"
+              : review.difficulty}
           </h1>
         </div>
       </div>
       {/* content */}
-      <div className='bg-muted flex flex-col gap-4'>
+      <div className='flex flex-col gap-4 w-full'>
         <h2 className='text-lg font-bold'>{review.course_code}</h2>
         <p className='flex gap-4'>
           {review.grade && <Tag text={`Grade: ${review.grade}`} grade />}
@@ -61,6 +81,7 @@ export default function ReviewCard({ review }: { review: Review }) {
       </div>
       <Button
         variant='ghost'
+        className='justify-end'
         onClick={async () => {
           await deleteReview(String(review.id));
           window.location.reload();

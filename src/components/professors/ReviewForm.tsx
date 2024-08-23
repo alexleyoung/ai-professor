@@ -158,9 +158,7 @@ export default function ReviewForm({
               <FormControl>
                 <Input
                   {...field}
-                  onChange={(e) =>
-                    field.onChange(Number(e.target.value + ".0"))
-                  }
+                  onChange={(e) => field.onChange(Number(e.target.value))}
                   type='number'
                   step={1}
                   min={1}

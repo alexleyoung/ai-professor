@@ -26,7 +26,17 @@ export default async function Professor({
                 ? "text-yellow-300"
                 : "text-rose-500"
             )}>
-            {prof.overall_rating}
+            {prof.overall_rating === 1
+              ? prof.overall_rating + ".0"
+              : prof.overall_rating === 2
+              ? prof.overall_rating + ".0"
+              : prof.overall_rating === 3
+              ? prof.overall_rating + ".0"
+              : prof.overall_rating === 4
+              ? prof.overall_rating + ".0"
+              : prof.overall_rating === 5
+              ? prof.overall_rating + ".0"
+              : prof.overall_rating}
           </h1>
           <h2 className='text-2xl text-zinc-400'> / 5</h2>
         </div>
