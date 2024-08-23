@@ -28,9 +28,12 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MultiSelect } from "@/components/ui/multiselect";
+import { createReview } from "@/utils/crud/reviews";
+import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   professor_id: z.string().min(1).max(10),
+  professor_name: z.string().min(1).max(100),
   course_code: z.string().min(1).max(10),
   rating: z.number().int().min(1).max(5),
   difficulty: z.number().int().min(1).max(5),
@@ -65,26 +68,53 @@ const TAGS = [
   { label: "Fun", value: "fun" },
 ];
 
-export default function ReviewForm({ prof }: { prof: Professor }) {
+export default function ReviewForm({
+  prof,
+  setOpen,
+}: {
+  prof: Professor;
+  setOpen: (open: boolean) => void;
+}) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      professor_id: String(prof.id),
+      professor_id: String(prof.id), // automatic
+      professor_name: prof.name, // automatic
       rating: 0,
       difficulty: 0,
       comment: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    toast({
+      title: "Submitting review...",
+    });
+    try {
+      await createReview(values);
+      toast({
+        title: "Review submitted",
+        description: "Thank you for your feedback!",
+      });
+      setOpen(false);
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "An error occurred",
+        description: "Please try again.",
+        variant: "destructive",
+      });
+    }
   }
+
+  const { toast } = useToast();
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className='space-y-4 h-[36rem] px-2 overflow-y-auto'>
+        className='space-y-4 max-h-[36rem] px-2 overflow-y-auto'>
         <FormField
           control={form.control}
           name='course_code'

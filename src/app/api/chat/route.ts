@@ -21,10 +21,13 @@ Guidelines:
 - Be aware of potential biases in reviews and ratings, and mention this when relevant.
 - If there isn't enough information to confidently recommend professors for a specific query, be honest about the limitations and suggest how the student might gather more information.
 
-Output: The output should resemble a json with the messages array where the explanation for each professor is a separate element.
+Output: The output should resemble a json with the messages array where the explanation for each professor is a separate element and professors which is an array of professor ids. There should always be 3 messages and 3 professors.
+If not all professors and messages are relevant to the query, preface that in the message.
+
 example:
 {
-  "messages": ["Professor one excels at this", "Professor two is known for that", "Professor three is great at this"]
+  "messages": ["Professor one excels at this", "Professor two is known for that", "Professor three is great at this"],
+  "professors": ["prof_id_1", "prof_id_2", "prof_id_3"]
 }
 
 Remember, your goal is to help students make informed decisions about their course selections based on professor reviews and ratings. Provide balanced, helpful information that allows students to choose professors that best fit their learning style and academic goals.
@@ -32,6 +35,7 @@ Remember, your goal is to help students make informed decisions about their cour
 
 const Response = z.object({
   messages: z.array(z.string()),
+  professors: z.array(z.string()),
 });
 
 export async function POST(req: Request) {
@@ -69,11 +73,10 @@ export async function POST(req: Request) {
 
   // create a response string with the results
   let resultString = "\n\nReturned results from vector db automatically:";
-  const profIds: String[] = [];
   results.matches.forEach((match) => {
-    profIds.push(match.id);
     resultString += `\n
     Professor: ${match.metadata?.professor_name}
+    Professor ID: ${match.metadata?.professor_id}
     Department: ${match.metadata?.department}
     Overall rating: ${match.metadata?.overall_rating}
     Difficulty level: ${match.metadata?.difficulty_level}
@@ -110,17 +113,9 @@ export async function POST(req: Request) {
   if (!completion.choices[0].message.content) {
     return new NextResponse("Error: No response from GPT-4o", { status: 500 });
   }
-  const messageData = JSON.parse(
-    completion.choices[0].message.content
-  ).messages;
+  const resData = JSON.parse(completion.choices[0].message.content);
 
-  return NextResponse.json(
-    {
-      messages: messageData,
-      professors: profIds,
-    },
-    {
-      status: 200,
-    }
-  );
+  return NextResponse.json(resData, {
+    status: 200,
+  });
 }

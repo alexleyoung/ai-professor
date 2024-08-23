@@ -1,4 +1,6 @@
+const { Pinecone } = require("@pinecone-database/pinecone");
 const { createClient } = require("@supabase/supabase-js");
+const { default: OpenAI } = require("openai");
 
 data = {
   reviews: [
@@ -255,23 +257,36 @@ data = {
 };
 
 reviews = data.reviews;
-const supabase = createClient(
-  "https://usehpurntrvbfmibsmdn.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzZWhwdXJudHJ2YmZtaWJzbWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjQzMzYyNzYsImV4cCI6MjAzOTkxMjI3Nn0.nyhugoZnDKHg_31KIpSIyuwf1THEPZsAQoZq333vEe8"
-);
 
-reviews.forEach(async (review) => {
-  const { error } = await supabase.from("reviews").insert({
-    professor_id: review.id,
-    professor_name: review.professor_name,
-    course_code: review.course_code,
-    rating: review.rating,
-    difficulty: review.difficulty,
-    comment: review.comment,
-    would_take_again: review.would_take_again,
-    grade: review.grade,
-    created_at: review.date,
-  });
-  if (error) console.log(error);
-  console.log(review.id);
+let revisedReviews = { reviews: [] };
+
+reviews.forEach((review) => {
+  revisedReviews.reviews.push({ ...review, professor_id: review.id });
 });
+
+const pc = new Pinecone({ apiKey });
+const ai = new OpenAI({
+  apiKey,
+});
+const index = pc.index("ai-professor").namespace("ns1");
+
+(async () => {
+  let processed = await Promise.all(
+    revisedReviews.reviews.map(async (review) => {
+      const response = await ai.embeddings.create({
+        input: review.comment,
+        model: "text-embedding-3-small",
+      });
+      const embedding = response.data[0].embedding;
+
+      const embed = {
+        id: String(review.id),
+        values: embedding,
+        metadata: review,
+      };
+
+      return embed;
+    })
+  );
+  index.upsert(processed);
+})();

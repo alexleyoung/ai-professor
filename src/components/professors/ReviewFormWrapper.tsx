@@ -44,7 +44,7 @@ export default function ReviewFormWrapper({ prof }: { prof: Professor }) {
                 Create a new rating for {prof.name}
               </DrawerDescription>
             </DrawerHeader>
-            <ReviewForm prof={prof} />
+            <ReviewForm prof={prof} setOpen={setOpen} />
             <DrawerFooter className='pt-2'>
               <DrawerClose asChild>
                 <Button variant='destructive'>Cancel</Button>
@@ -62,9 +62,11 @@ export default function ReviewFormWrapper({ prof }: { prof: Professor }) {
           <DialogContent className='sm:max-w-[425px]'>
             <DialogHeader>
               <DialogTitle>New Rating</DialogTitle>
-              <DialogDescription>Create a new rating for</DialogDescription>
+              <DialogDescription>
+                Create a new rating for {prof.name}
+              </DialogDescription>
             </DialogHeader>
-            <ReviewForm prof={prof} />
+            <ReviewForm prof={prof} setOpen={setOpen} />
           </DialogContent>
         </Dialog>
       )}

@@ -284,7 +284,7 @@ export const MultiSelect = React.forwardRef<
           className='w-auto p-0'
           align='start'
           onEscapeKeyDown={() => setIsPopoverOpen(false)}>
-          <Command>
+          <Command className='overflow-y-auto'>
             <CommandInput
               placeholder='Search...'
               onKeyDown={handleInputKeyDown}
@@ -307,6 +307,9 @@ export const MultiSelect = React.forwardRef<
                   </div>
                   <span>(Select All)</span>
                 </CommandItem>
+              </CommandGroup>
+              <CommandSeparator />
+              <CommandGroup>
                 {options.map((option) => {
                   const isSelected = selectedValues.includes(option.value);
                   return (

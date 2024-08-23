@@ -3,7 +3,6 @@ import { getReviewsForProfessor } from "@/utils/crud/reviews";
 
 import { cn } from "@/lib/utils";
 import ReviewCard from "@/components/professors/ReviewCard";
-import { Button } from "@/components/ui/button";
 import ReviewFormWrapper from "@/components/professors/ReviewFormWrapper";
 
 export default async function Professor({
