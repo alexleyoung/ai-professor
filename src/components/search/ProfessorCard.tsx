@@ -18,9 +18,9 @@ export default function ProfessorCard({
           className={cn(
             "p-3 text-xl font-bold",
             prof.overall_rating > 4
-              ? "bg-green-500"
+              ? "bg-green-300"
               : prof.overall_rating > 2.5
-              ? "bg-amber-500"
+              ? "bg-yellow-300"
               : "bg-rose-500"
           )}>
           {prof.overall_rating}
