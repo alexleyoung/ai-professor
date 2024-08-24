@@ -27,8 +27,8 @@ import { debounce } from "lodash";
 export default function Professors() {
   const [search, setSearch] = useState("");
   const [schoolSearch, setSchoolSearch] = useState("");
-  const [schoolInputValue, setSchoolInputValue] = useState("");
   const [schools, setSchools] = useState<School[]>([]);
+  const [selectedSchool, setSelectedSchool] = useState<School | null>(null);
   const [professors, setProfessors] = useState<{
     messages: string[];
     profIds: string[];
@@ -100,20 +100,10 @@ export default function Professors() {
     }
   }, [professors]);
 
-  const debouncedSetSchoolSearch = useCallback(
-    debounce((value) => {
-      setSchoolSearch(value);
-    }, 1000),
-    []
-  );
-
-  // Update both schoolInputValue and schoolSearch when typing
-  function handleInputChange(e: string) {
-    debouncedSetSchoolSearch.cancel();
-
-    setSchoolInputValue(e);
-    debouncedSetSchoolSearch(e);
-  }
+  // debounce school search
+  const debouncedSetSchoolSearch = debounce((value) => {
+    setSchoolSearch(value);
+  }, 500);
 
   // search for school
   useEffect(() => {
@@ -160,28 +150,19 @@ export default function Professors() {
             Type in the search box to filter through our database of schools.
           </h2>
         </Label>
-        <div className='md:w-3/5 w-full flex items-center gap-1'>
-          <Command>
-            <CommandInput
-              placeholder='Type the name of a school to search...'
-              value={schoolInputValue}
-              onValueChange={handleInputChange}
-            />
-            <CommandList>
-              {/* <CommandEmpty>No results found.</CommandEmpty> */}
-            </CommandList>
-          </Command>
-          <Button
-            variant={"secondary"}
-            disabled={loading}
-            onClick={async () => {}}>
-            <Search size={24} />
-          </Button>
+        <div className='group relative md:w-3/5 w-full'>
+          <Input
+            placeholder='Type the name of your school to search...'
+            onChange={debouncedSetSchoolSearch}
+          />
+          <div className='absolute top-12 flex-col gap-2 hidden group-focus-within:flex'>
+            {loading ? <></> : <></>}
+          </div>
         </div>
       </section>
 
       {/* Query for professors */}
-      {schools && (
+      {selectedSchool && (
         <section className='-my-20 h-screen flex flex-col p-8 items-center justify-center gap-8'>
           <Label
             className='flex flex-col gap-4 items-center'
