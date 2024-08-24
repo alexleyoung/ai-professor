@@ -41,9 +41,22 @@ const Response = z.object({
 export async function POST(req: Request) {
   // get req body and initialize openai + pineocne
   const body = await req.json();
-  const data = body?.messages;
+  if (!body) {
+    return new NextResponse("Bad Request. Must include message + school", {
+      status: 400,
+    });
+  }
+  const data = body.messages;
   if (!data) {
-    return new NextResponse("Bad Request", { status: 400 });
+    return new NextResponse("Bad Request. Must include message + school", {
+      status: 400,
+    });
+  }
+  const schoolId = body.schoolId;
+  if (!schoolId) {
+    return new NextResponse("Bad Request. Must include school", {
+      status: 400,
+    });
   }
 
   const pc = new Pinecone({
@@ -54,7 +67,7 @@ export async function POST(req: Request) {
   });
 
   // get pinecone index
-  const index = pc.index("ai-professor").namespace("ns1");
+  const index = pc.index("ai-professor").namespace(schoolId);
   // get the most recent user message from the openai conversation
   const userMessage = data[data.length - 1].content;
   // create an embedding from the text

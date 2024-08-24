@@ -99,7 +99,7 @@ export default function ReviewForm({
     }
 
     try {
-      await createReview(values);
+      await createReview(values, String(prof.schoolId));
       toast({
         title: "Review submitted",
         description: "Thank you for your feedback!",

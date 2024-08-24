@@ -15,7 +15,7 @@ export async function getReviewsForProfessor(professorId: string) {
   return data as Review[];
 }
 
-export async function createReview(review: ReviewFormValues) {
+export async function createReview(review: ReviewFormValues, schoolId: string) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("reviews")
@@ -25,7 +25,8 @@ export async function createReview(review: ReviewFormValues) {
   if (error) {
     throw error;
   }
-  embedReview(data as Review);
+
+  embedReview(data as Review, schoolId);
   const res = await supabase.rpc("update_review_count", {
     val: 1,
     prof_id: review.professor_id,
@@ -49,7 +50,7 @@ export async function updateReview(review: Review) {
   }
 }
 
-export async function deleteReview(id: string) {
+export async function deleteReview(id: string, schoolId: string) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("reviews")
@@ -64,7 +65,7 @@ export async function deleteReview(id: string) {
     val: -1,
     prof_id: data.professor_id,
   });
-  await deleteReviewEmbedding(id);
+  await deleteReviewEmbedding(id, schoolId);
 }
 
 type ReviewFormValues = {

@@ -6,6 +6,7 @@ export type Professor = {
   overall_rating: number;
   difficulty_level: number;
   review_count: number;
+  schoolId: number;
   created_at: string;
 };
 
@@ -24,4 +25,13 @@ export type Review = {
   mandatory_attendance?: boolean;
   textbook?: boolean;
   tags?: string[];
+};
+
+export type School = {
+  id: number;
+  created_at: string;
+  name: string;
+  city: string;
+  country: string;
+  state: string;
 };

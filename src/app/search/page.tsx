@@ -10,10 +10,23 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Search } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/components/ui/command";
 import ProfessorCard from "@/components/search/ProfessorCard";
+import { debounce } from "lodash";
 
 export default function Professors() {
   const [search, setSearch] = useState("");
+  const [school, setSchool] = useState("");
   const [professors, setProfessors] = useState<{
     messages: string[];
     profIds: string[];
@@ -34,7 +47,7 @@ export default function Professors() {
     const res = await fetch("/api/chat", {
       method: "POST",
       body: JSON.stringify({
-        messages: [{ content: search }],
+        messages: [{ content: content }],
       }),
     });
     const data: chatRes = await res.json();
@@ -50,6 +63,7 @@ export default function Professors() {
     setLoading(false);
   }
 
+  // fetch professors
   useEffect(() => {
     if (professors.profIds.length !== 0) {
       setLoading(true);
@@ -84,6 +98,16 @@ export default function Professors() {
     }
   }, [professors]);
 
+  const debounceSetSchool = debounce(setSchool, 500);
+
+  // search for school
+  useEffect(() => {
+    if (school) {
+      setLoading(true);
+    }
+  }, [school]);
+
+  // scroll to results
   useEffect(() => {
     if (resultsRef.current) {
       resultsRef.current.scrollIntoView({ behavior: "smooth" });
@@ -92,44 +116,76 @@ export default function Professors() {
 
   return (
     <>
-      {/* Query for professors */}
+      {/* Pick school */}
       <section className='-my-20 h-screen flex flex-col p-8 items-center justify-center gap-8'>
         <Label
           className='flex flex-col gap-4 items-center'
-          htmlFor='find-professor'>
-          <h1 className='text-4xl font-semibold'>
-            Find the right professor for you!
-          </h1>
+          htmlFor='find-school'>
+          <h1 className='text-4xl font-semibold'>What school do you go to?</h1>
           <h2 className='text-xl'>
-            Use natural language and let our algorithm do the rest.
+            Type in the search box to filter through our database of schools.
           </h2>
         </Label>
-        <div className='w-3/5 flex items-center gap-1'>
-          <Input
-            id='find-professor'
-            placeholder='Find a professor that explains complex topics well'
-            disabled={loading}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            onKeyDown={async (e) => {
-              if (!loading && e.key === "Enter") {
-                await chat(search);
-                setSearch("");
-              }
-            }}
-          />
+        <div className='md:w-3/5 w-full flex items-center gap-1'>
+          <Command>
+            <CommandInput
+              placeholder='Type a command or search...'
+              value={school}
+              onValueChange={(e) => debounceSetSchool(e)}
+            />
+            <CommandList>
+              {/* <CommandEmpty>No results found.</CommandEmpty> */}
+            </CommandList>
+          </Command>
           <Button
             variant={"secondary"}
             disabled={loading}
-            onClick={async () => {
-              // search for professors
-              await chat(search);
-              setSearch("");
-            }}>
+            onClick={async () => {}}>
             <Search size={24} />
           </Button>
         </div>
       </section>
+
+      {/* Query for professors */}
+      {school && (
+        <section className='-my-20 h-screen flex flex-col p-8 items-center justify-center gap-8'>
+          <Label
+            className='flex flex-col gap-4 items-center'
+            htmlFor='find-professor'>
+            <h1 className='text-4xl font-semibold'>
+              Find the right professor for you!
+            </h1>
+            <h2 className='text-xl'>
+              Use natural language and let our algorithm do the rest.
+            </h2>
+          </Label>
+          <div className='md:w-3/5 w-full flex items-center gap-1'>
+            <Input
+              id='find-professor'
+              placeholder='Find a professor that explains complex topics well'
+              disabled={loading}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={async (e) => {
+                if (!loading && e.key === "Enter") {
+                  await chat(search);
+                  setSearch("");
+                }
+              }}
+            />
+            <Button
+              variant={"secondary"}
+              disabled={loading}
+              onClick={async () => {
+                // search for professors
+                await chat(search);
+                setSearch("");
+              }}>
+              <Search size={24} />
+            </Button>
+          </div>
+        </section>
+      )}
 
       {/* top 3 professors with explanation after search is done */}
       {queryResult.length !== 0 && (

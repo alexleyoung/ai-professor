@@ -10,7 +10,7 @@ const openai = new OpenAI({
 
 export const index = pc.index("ai-professor");
 
-export async function embedReview(review: Review) {
+export async function embedReview(review: Review, schoolId: string) {
   const embedding = await openai.embeddings.create({
     model: "text-embedding-3-small",
     input: review.comment,
@@ -36,9 +36,14 @@ export async function embedReview(review: Review) {
       metadata: filteredReview,
     },
   ];
-  await index.namespace("ns1").upsert(data);
+  const namespace = "ns" + schoolId;
+  await index.namespace(namespace).upsert(data);
 }
 
-export async function deleteReviewEmbedding(reviewId: string) {
-  await index.namespace("ns1").deleteOne(reviewId);
+export async function deleteReviewEmbedding(
+  reviewId: string,
+  schoolId: string
+) {
+  const namespace = "ns" + schoolId;
+  await index.namespace(namespace).deleteOne(reviewId);
 }

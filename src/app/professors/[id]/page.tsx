@@ -51,7 +51,7 @@ export default async function Professor({
         <ReviewFormWrapper prof={prof} />
         <div className='flex flex-col gap-2'>
           {reviews.map((review) => {
-            return <ReviewCard key={review.id} review={review} />;
+            return <ReviewCard key={review.id} review={review} prof={prof} />;
           })}
         </div>
       </section>

@@ -6,7 +6,13 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { deleteReview } from "@/utils/crud/reviews";
 
-export default function ReviewCard({ review }: { review: Review }) {
+export default function ReviewCard({
+  review,
+  prof,
+}: {
+  review: Review;
+  prof: Professor;
+}) {
   return (
     <div className='bg-muted p-6 flex flex-col sm:flex-row gap-4 md:gap-8'>
       {/* scores */}
@@ -16,7 +22,7 @@ export default function ReviewCard({ review }: { review: Review }) {
           <h1
             className={cn(
               "text-4xl p-3 font-bold",
-              review.rating > 4
+              review.rating >= 4
                 ? "bg-green-300"
                 : review.rating > 2.5
                 ? "bg-yellow-300"
@@ -83,7 +89,7 @@ export default function ReviewCard({ review }: { review: Review }) {
         variant='ghost'
         className='justify-end'
         onClick={async () => {
-          await deleteReview(String(review.id));
+          await deleteReview(String(review.id), String(prof.schoolId));
           window.location.reload();
         }}>
         <X />
