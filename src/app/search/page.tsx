@@ -164,6 +164,7 @@ export default function Professors() {
                     <>
                       {schools.map((school, i) => (
                         <div
+                          key={school.id}
                           className={cn(
                             "px-2 py-1 cursor-pointer hover:bg-muted transition-colors",
                             i === schools.length - 1 && "rounded-b-md"

@@ -10,6 +10,7 @@ import ProfessorCard from "@/components/search/ProfessorCard";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Professors() {
   const [profs, setProfs] = useState<Professor[]>([]);
@@ -52,16 +53,22 @@ export default function Professors() {
     })();
   }, [schoolSearch]);
 
+  const debouncedSetFilter = debounce((value) => {
+    setFilter(value);
+  }, 500);
+
   useEffect(() => {
-    setLoading(true);
+    if (selectedSchool) {
+      setLoading(true);
 
-    (async function () {
-      const data = await getProfessors(filter);
-      setProfs(data);
-    })();
+      (async function () {
+        const data = await getProfessors(String(selectedSchool.id), filter);
+        setProfs(data);
+      })();
 
-    setLoading(false);
-  }, [filter]);
+      setLoading(false);
+    }
+  }, [filter, selectedSchool]);
 
   return (
     <>
@@ -78,12 +85,16 @@ export default function Professors() {
             </h1>
             <Input
               placeholder='Search by name'
-              onChange={(e) => debouncedSetSchoolSearch(e.target.value)}
+              onChange={(e) => {
+                debouncedSetFilter(e.target.value);
+              }}
             />
           </div>
           <div className='flex flex-col gap-4'>
             {loading ? (
-              <></>
+              <>
+                <Skeleton className='h-28 w-full' />
+              </>
             ) : (
               profs.map((prof) => {
                 return <ProfessorCard key={prof.id} prof={prof} />;
@@ -120,6 +131,7 @@ export default function Professors() {
                     <>
                       {schools.map((school, i) => (
                         <div
+                          key={school.id}
                           className={cn(
                             "px-2 py-1 cursor-pointer hover:bg-muted transition-colors",
                             i === schools.length - 1 && "rounded-b-md"

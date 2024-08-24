@@ -2,13 +2,16 @@
 
 import { createClient } from "@/utils/supabase/server";
 
-export async function getProfessors(filter?: string) {
+export async function getProfessors(schoolId: string, filter?: string) {
   const supabase = createClient();
 
   const { data, error } = await supabase
     .from("professors")
-    .select("*")
+    .select()
+    .eq("school_id", schoolId)
     .ilike("name", `%${filter}%`);
+
+  console.log(filter);
 
   if (error) {
     throw error;
