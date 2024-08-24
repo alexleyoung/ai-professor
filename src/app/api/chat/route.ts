@@ -66,8 +66,10 @@ export async function POST(req: Request) {
     apiKey: process.env.OPENAI_API_KEY!,
   });
 
+  const namespace = `ns${schoolId}`;
+
   // get pinecone index
-  const index = pc.index("ai-professor").namespace(schoolId);
+  const index = pc.index("ai-professor").namespace(namespace);
   // get the most recent user message from the openai conversation
   const userMessage = data[data.length - 1].content;
   // create an embedding from the text
