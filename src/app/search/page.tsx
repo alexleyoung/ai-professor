@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { createClient } from "@/utils/supabase/client";
 
 import { Button } from "@/components/ui/button";
@@ -26,7 +26,9 @@ import { debounce } from "lodash";
 
 export default function Professors() {
   const [search, setSearch] = useState("");
-  const [school, setSchool] = useState("");
+  const [schoolSearch, setSchoolSearch] = useState("");
+  const [schoolInputValue, setSchoolInputValue] = useState("");
+  const [schools, setSchools] = useState<School[]>([]);
   const [professors, setProfessors] = useState<{
     messages: string[];
     profIds: string[];
@@ -98,14 +100,46 @@ export default function Professors() {
     }
   }, [professors]);
 
-  const debounceSetSchool = debounce(setSchool, 500);
+  const debouncedSetSchoolSearch = useCallback(
+    debounce((value) => {
+      setSchoolSearch(value);
+    }, 1000),
+    []
+  );
+
+  // Update both schoolInputValue and schoolSearch when typing
+  function handleInputChange(e: string) {
+    debouncedSetSchoolSearch.cancel();
+
+    setSchoolInputValue(e);
+    debouncedSetSchoolSearch(e);
+  }
 
   // search for school
   useEffect(() => {
-    if (school) {
+    (async () => {
       setLoading(true);
-    }
-  }, [school]);
+
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("schools")
+        .select()
+        .ilike("name", `%${schoolSearch}%`);
+
+      if (error) {
+        toast({
+          title: "Error",
+          description: "An error occurred while searching for schools.",
+        });
+        setLoading(false);
+        return;
+      }
+
+      setSchools(data || []);
+      console.log(data);
+      setLoading(false);
+    })();
+  }, [schoolSearch]);
 
   // scroll to results
   useEffect(() => {
@@ -129,9 +163,9 @@ export default function Professors() {
         <div className='md:w-3/5 w-full flex items-center gap-1'>
           <Command>
             <CommandInput
-              placeholder='Type a command or search...'
-              value={school}
-              onValueChange={(e) => debounceSetSchool(e)}
+              placeholder='Type the name of a school to search...'
+              value={schoolInputValue}
+              onValueChange={handleInputChange}
             />
             <CommandList>
               {/* <CommandEmpty>No results found.</CommandEmpty> */}
@@ -147,7 +181,7 @@ export default function Professors() {
       </section>
 
       {/* Query for professors */}
-      {school && (
+      {schools && (
         <section className='-my-20 h-screen flex flex-col p-8 items-center justify-center gap-8'>
           <Label
             className='flex flex-col gap-4 items-center'

@@ -1,7 +1,20 @@
 import { createClient } from "@/utils/supabase/server";
+import { createClient as clientCreateClient } from "@/utils/supabase/client";
 
 export async function getSchools(filter = "") {
   const supabase = createClient();
+  const { data, error } = await supabase
+    .from("schools")
+    .select()
+    .ilike("name", `%${filter}%`);
+  if (error) {
+    throw error;
+  }
+  return data as School[];
+}
+
+export async function clientGetSchools(filter = "") {
+  const supabase = clientCreateClient();
   const { data, error } = await supabase
     .from("schools")
     .select()
