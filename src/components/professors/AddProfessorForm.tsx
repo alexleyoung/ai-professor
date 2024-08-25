@@ -27,7 +27,7 @@ const formSchema = z.object({
   firstName: z.string().min(1).max(50),
   lastName: z.string().min(1).max(50),
   middleName: z.string().min(1).max(50).optional(),
-  department: z.array(z.string().min(1).max(50)),
+  department: z.array(z.string()).min(1).max(50),
   courses: z.array(z.string()).min(1),
 });
 
@@ -87,12 +87,11 @@ export default function AddProfessorForm({ schoolId }: AddProfessorFormProps) {
 
   // fetch departments
   useEffect(() => {
+    let temp: { label: string; value: string }[] = [];
     selectedSchool?.departments?.forEach((department) => {
-      setDepartments((prev) => [
-        ...prev,
-        { label: department, value: department },
-      ]);
+      temp.push({ label: department, value: department });
     });
+    setDepartments(temp);
   }, [selectedSchool]);
 
   // search for school
@@ -235,10 +234,10 @@ export default function AddProfessorForm({ schoolId }: AddProfessorFormProps) {
               <FormControl>
                 <MultiSelect
                   options={departments}
-                  defaultValue={[]}
+                  defaultValue={field.value || []}
                   onValueChange={(e) => field.onChange(e)}
                   placeholder='Select Department(s)'
-                  maxCount={3}
+                  maxCount={4}
                 />
               </FormControl>
               <FormMessage />
