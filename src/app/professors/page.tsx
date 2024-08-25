@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 export default function Professors() {
   const [profs, setProfs] = useState<Professor[]>([]);
@@ -44,6 +45,7 @@ export default function Professors() {
           title: "Error",
           description: "An error occurred while searching for schools.",
         });
+
         setLoading(false);
         return;
       }
@@ -64,9 +66,8 @@ export default function Professors() {
       (async function () {
         const data = await getProfessors(String(selectedSchool.id), filter);
         setProfs(data);
+        setLoading(false);
       })();
-
-      setLoading(false);
     }
   }, [filter, selectedSchool]);
 
@@ -79,10 +80,24 @@ export default function Professors() {
               Professors at{" "}
               <span
                 className='underline'
-                onClick={() => setSelectedSchool(null)}>
+                onClick={() => {
+                  setSelectedSchool(null);
+                  setProfs([]);
+                }}>
                 {selectedSchool.name}
               </span>
             </h1>
+            <h2 className='-my-4'>
+              Don't see yours?{" "}
+              <Link
+                href={{
+                  pathname: "/professors/add",
+                  query: { schoolId: selectedSchool.id },
+                }}
+                className='underline text-sky-500'>
+                Add them here.
+              </Link>
+            </h2>
             <Input
               placeholder='Search by name'
               onChange={(e) => {
@@ -91,8 +106,14 @@ export default function Professors() {
             />
           </div>
           <div className='flex flex-col gap-4'>
+            {/* FIX THIS!!! LOADING SKELETONS NOT SHOWING UP */}
             {loading ? (
               <>
+                <Skeleton className='h-28 w-full' />
+                <Skeleton className='h-28 w-full' />
+                <Skeleton className='h-28 w-full' />
+                <Skeleton className='h-28 w-full' />
+                <Skeleton className='h-28 w-full' />
                 <Skeleton className='h-28 w-full' />
               </>
             ) : (

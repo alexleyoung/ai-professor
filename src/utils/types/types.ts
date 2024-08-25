@@ -1,5 +1,8 @@
 export type Professor = {
   id: number;
+  first_name?: string;
+  last_name?: string;
+  middle_name?: string;
   name: string;
   department: string;
   courses: string[];
@@ -34,4 +37,5 @@ export type School = {
   city: string;
   country: string;
   state: string;
+  departments: string[];
 };
