@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -8,21 +8,19 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   NavigationMenuViewport,
-} from "@/components/ui/navigation-menu"
+} from "@/components/ui/navigation-menu";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
-import Link from "next/link"
-import Hero from "@/components/landing/Hero"
-import Features from "@/components/landing/Features"
-import Footer from "@/components/landing/Footer"
-
-
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
+import Link from "next/link";
+import Hero from "@/components/landing/Hero";
+import Features from "@/components/landing/Features";
+import Footer from "@/components/landing/Footer";
 
 export default function Landing() {
   return (
     <main className='flex min-h-screen flex-col justify-between bg-slate-50'>
-      {/* Navbar */}
+      {/* Navbar
       <div className="flex flex-row items-center justify-between p-4 bg-white">
         <div className="flex flex-row items-center space-x-4 pl-4">
           <Avatar>
@@ -42,7 +40,7 @@ export default function Landing() {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-      </div>
+      </div> */}
       <Hero />
       <Features />
       <Footer />
