@@ -33,12 +33,28 @@ export async function getProfessor(id: string) {
   return data as Professor;
 }
 
-export async function createProfessor(professor: Professor) {
+export async function createProfessor(professor: ProfessorFormData) {
+  const prof = {
+    school_id: professor.school_id,
+    first_name: professor.first_name,
+    last_name: professor.last_name,
+    middle_name: professor.middle_name,
+    name: `${professor.first_name} ${
+      professor.middle_name === undefined ? "" : professor.middle_name
+    } ${professor.last_name}`,
+    department: professor.department,
+    courses: professor.courses,
+    overall_rating: 0,
+    difficulty_level: 0,
+    review_count: 0,
+  };
+
   const supabase = createClient();
-  const { error } = await supabase.from("professors").insert(professor);
+  const { error } = await supabase.from("professors").insert(prof);
   if (error) {
     throw error;
   }
+  return true;
 }
 
 export async function updateProfessor(professor: Professor) {
@@ -59,3 +75,12 @@ export async function deleteProfessor(id: string) {
     throw error;
   }
 }
+
+type ProfessorFormData = {
+  school_id: string;
+  first_name: string;
+  last_name: string;
+  middle_name?: string;
+  department: string;
+  courses: string[];
+};
