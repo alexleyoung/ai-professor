@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState, useEffect } from "react";
-import { debounce } from "lodash";
+import { debounce, set } from "lodash";
 import { createClient } from "@/utils/supabase/client";
 import { cn } from "@/lib/utils";
 
@@ -20,15 +20,24 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { MultiSelect } from "@/components/ui/multiselect";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { createProfessor } from "@/utils/crud/professors";
 
 const formSchema = z.object({
-  schoolId: z.string(),
-  firstName: z.string().min(1).max(50),
-  lastName: z.string().min(1).max(50),
-  middleName: z.string().min(1).max(50).optional(),
-  department: z.array(z.string()).min(1).max(50),
-  courses: z.array(z.string()).min(1),
+  school_id: z.string(),
+  first_name: z.string().min(1).max(50),
+  last_name: z.string().min(1).max(50),
+  middle_name: z.string().min(1).max(50).optional(),
+  department: z.string().min(1),
+  courses: z.string().min(1),
 });
 
 type AddProfessorFormProps = {
@@ -48,12 +57,32 @@ export default function AddProfessorForm({ schoolId }: AddProfessorFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      schoolId: schoolId || "",
+      school_id: schoolId || "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true);
+    toast({
+      title: "Creating professor...",
+      description: "Please wait while we create the professor.",
+    });
+    const res = await createProfessor({
+      ...values,
+      courses: values.courses.trim().split(" "),
+    });
+    if (res) {
+      toast({
+        title: "Professor created",
+        description: "The professor has been successfully created.",
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: "An error occurred while creating the professor.",
+      });
+    }
+    setLoading(false);
   }
 
   const { toast } = useToast();
@@ -91,7 +120,7 @@ export default function AddProfessorForm({ schoolId }: AddProfessorFormProps) {
     selectedSchool?.departments?.forEach((department) => {
       temp.push({ label: department, value: department });
     });
-    setDepartments(temp);
+    setDepartments([...temp, { label: "Other", value: "Other" }]);
   }, [selectedSchool]);
 
   // search for school
@@ -125,7 +154,7 @@ export default function AddProfessorForm({ schoolId }: AddProfessorFormProps) {
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
         <FormField
           control={form.control}
-          name='schoolId'
+          name='school_id'
           render={({ field }) => (
             <FormItem>
               <FormLabel>School *</FormLabel>
@@ -188,7 +217,7 @@ export default function AddProfessorForm({ schoolId }: AddProfessorFormProps) {
         />
         <FormField
           control={form.control}
-          name='firstName'
+          name='first_name'
           render={({ field }) => (
             <FormItem>
               <FormLabel>First Name *</FormLabel>
@@ -201,7 +230,7 @@ export default function AddProfessorForm({ schoolId }: AddProfessorFormProps) {
         />
         <FormField
           control={form.control}
-          name='lastName'
+          name='last_name'
           render={({ field }) => (
             <FormItem>
               <FormLabel>First Name *</FormLabel>
@@ -214,7 +243,7 @@ export default function AddProfessorForm({ schoolId }: AddProfessorFormProps) {
         />
         <FormField
           control={form.control}
-          name='middleName'
+          name='middle_name'
           render={({ field }) => (
             <FormItem>
               <FormLabel>Middle Name</FormLabel>
@@ -232,13 +261,35 @@ export default function AddProfessorForm({ schoolId }: AddProfessorFormProps) {
             <FormItem>
               <FormLabel>Department *</FormLabel>
               <FormControl>
-                <MultiSelect
-                  options={departments}
-                  defaultValue={field.value || []}
-                  onValueChange={(e) => field.onChange(e)}
-                  placeholder='Select Department(s)'
-                  maxCount={4}
-                />
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder='Department' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {departments.map((department) => (
+                      <SelectItem
+                        key={department.value}
+                        value={department.value}>
+                        {department.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='courses'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Courses *</FormLabel>
+              <FormControl>
+                <Input {...field} placeholder='MATH165' />
               </FormControl>
               <FormMessage />
             </FormItem>
