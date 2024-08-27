@@ -190,7 +190,7 @@ const SkeletonFour = () => {
           className='h-10 w-10'
         />
         <p className='sm:text-sm text-xs text-center font-semibold text-neutral-500 mt-4'>
-          Just code in Vanilla Javascript
+          Just read the whole textbook
         </p>
         <p className='border border-red-500 bg-red-100 dark:bg-red-900/20 text-red-600 text-xs rounded-full px-2 py-0.5 mt-4'>
           Delusional
@@ -205,7 +205,7 @@ const SkeletonFour = () => {
           className='h-10 w-10'
         />
         <p className='sm:text-sm text-xs text-center font-semibold text-neutral-500 mt-4'>
-          Tailwind CSS is cool, you know
+          I'm here to help you learn
         </p>
         <p className='border border-green-300 bg-green-100 dark:bg-green-900/20 text-green-600 text-xs rounded-full px-2 py-0.5 mt-4'>
           Sensible
@@ -222,7 +222,7 @@ const SkeletonFour = () => {
           className='h-10 w-10'
         />
         <p className='sm:text-sm text-xs text-center font-semibold text-neutral-500 mt-4'>
-          I love angular and Redux.
+          Pop quiz on the second day
         </p>
         <p className='border border-orange-500 bg-orange-100 dark:bg-orange-900/20 text-orange-600 text-xs rounded-full px-2 py-0.5 mt-4'>
           Helpless

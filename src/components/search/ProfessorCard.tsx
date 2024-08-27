@@ -12,11 +12,11 @@ export default function ProfessorCard({
     <Link
       href={`/professors/${prof.id}`}
       className='bg-muted hover:scale-[1.015] transition-transform duration-300 p-4 flex gap-4'>
-      <div className='flex flex-col gap-2'>
+      <div className='flex flex-col gap-2 min-w-[100px]'>
         <h2 className='font-semibold'>Overall</h2>
         <div
           className={cn(
-            "p-3 text-xl font-bold",
+            "w-12 h-12 flex items-center justify-center text-xl font-bold",
             prof.overall_rating > 4
               ? "bg-green-300"
               : prof.overall_rating > 2.5
@@ -43,7 +43,7 @@ export default function ProfessorCard({
             : "No ratings"}
         </h2>
       </div>
-      <div className='flex flex-col gap-2'>
+      <div className='flex flex-col gap-4'>
         <h1 className='text-xl flex flex-col sm:flex-row gap-2'>
           <span className='font-semibold'>{prof.name}</span>
           <em>{prof.department}</em>

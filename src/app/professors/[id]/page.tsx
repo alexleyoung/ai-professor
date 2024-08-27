@@ -40,11 +40,11 @@ export default async function Professor({
           </h1>
           <h2 className='text-2xl text-zinc-400'> / 5</h2>
         </div>
-        <h1 className='text-4xl font-semibold'>{prof.name}</h1>
-        <h2>{prof.department}</h2>
-        <h2>{prof.difficulty_level}</h2>
-        <h2>{prof.courses}</h2>
-        <h2>{prof.review_count}</h2>
+        <h1 className='text-4xl font-bold'>{prof.name}</h1>
+        <h2 className='text-2xl italic'>{prof.department}</h2>
+        <h2>Difficulty: {prof.difficulty_level}</h2>
+        <h2>Courses: {prof.courses}</h2>
+        <h2>Reviews: {prof.review_count}</h2>
       </section>
       <section className='px-12 py-10 space-y-8'>
         <h1 className='text-4xl font-semibold'>Student Ratings</h1>
